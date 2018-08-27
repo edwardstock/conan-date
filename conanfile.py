@@ -7,7 +7,7 @@ import os
 
 class LibnameConan(ConanFile):
     name = "date"
-    version = "2.4"
+    version = "2.4.1"
     url = "https://github.com/bincrafters/conan-date"
     description = "A date and time library based on the C++11/14/17 <chrono> header "
 
