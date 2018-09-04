@@ -40,7 +40,6 @@ class DateConan(ConanFile):
         cmake.definitions["ENABLE_DATE_TESTING"] = False
         cmake.definitions["USE_SYSTEM_TZ_DB"] = self.options.use_system_tz_db
         cmake.definitions["USE_TZ_DB_IN_DOT"] = self.options.use_tz_db_in_dot
-        cmake.definitions["BUILD_TZ_STATIC"] = not self.options.shared
         cmake.configure(build_folder=self.build_folder)
         return cmake
 
@@ -55,3 +54,5 @@ class DateConan(ConanFile):
 
     def package_info(self):
         self.cpp_info.libs = tools.collect_libs(self)
+        if self.settings.os == "Linux":
+            self.cpp_info.libs.append("pthread")
