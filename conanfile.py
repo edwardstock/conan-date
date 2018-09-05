@@ -48,7 +48,7 @@ class DateConan(ConanFile):
         cmake.build()
 
     def package(self):
-        self.copy(pattern="LICENSE", dst="licenses", src=self.source_subfolder)
+        self.copy(pattern="LICENSE.txt", dst="licenses", src=self.source_subfolder)
         cmake = self.configure_cmake()
         cmake.install()
 
