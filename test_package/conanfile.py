@@ -19,6 +19,14 @@ class TestPackageConan(ConanFile):
                 self.run("sudo cp UTC {}".format(os.path.join(zoneinfo_dir, "UTC")))
             except:
                 pass
+        elif tools.os_info.is_osx:
+            zoneinfo_dir = os.path.join(os.sep, "etc", "zoneinfo")
+            try:
+                if not os.path.exists(zoneinfo_dir):
+                    self.run("mkdir {}".format(zoneinfo_dir))
+                self.run("cp UTC {}".format(os.path.join(zoneinfo_dir, "UTC")))
+            except:
+                pass
 
     def build(self):
         cmake = CMake(self)
