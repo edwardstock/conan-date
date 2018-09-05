@@ -18,7 +18,7 @@ class DateConan(ConanFile):
     generators = "cmake"
     settings = "os", "arch", "compiler", "build_type"
     options = {"shared": [True, False], "fPIC": [True, False], "use_system_tz_db": [True, False], "use_tz_db_in_dot": [True, False]}
-    default_options = ("shared=False", "fPIC=True", "use_system_tz_db=True", "use_tz_db_in_dot=False")
+    default_options = ("shared=False", "fPIC=True", "use_system_tz_db=False", "use_tz_db_in_dot=False")
     source_subfolder = "source_folder"
     build_folder = "build_folder"
 
@@ -28,7 +28,7 @@ class DateConan(ConanFile):
 
     def requirements(self):
         if not self.options.use_system_tz_db:
-            self.requires("libcurl/[>=7.52.1]@bincrafters/stable")
+            self.requires("libcurl/7.56.1@bincrafters/stable")
 
     def source(self):
         tools.get("{0}/archive/v{1}.tar.gz".format(self.homepage, self.version))
@@ -56,3 +56,5 @@ class DateConan(ConanFile):
         self.cpp_info.libs = tools.collect_libs(self)
         if self.settings.os == "Linux":
             self.cpp_info.libs.append("pthread")
+        use_system_tz_db = "0" if self.options.use_system_tz_db else "1"
+        self.cpp_info.defines.extend(["USE_AUTOLOAD={}".format(use_system_tz_db), "HAS_REMOTE_API={}".format(use_system_tz_db)])
