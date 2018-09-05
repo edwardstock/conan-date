@@ -18,7 +18,7 @@ class DateConan(ConanFile):
     generators = "cmake"
     settings = "os", "arch", "compiler", "build_type"
     options = {"shared": [True, False], "fPIC": [True, False], "use_system_tz_db": [True, False], "use_tz_db_in_dot": [True, False]}
-    default_options = ("shared=False", "fPIC=True", "use_system_tz_db=False", "use_tz_db_in_dot=False")
+    default_options = ("shared=False", "fPIC=True", "use_system_tz_db=True", "use_tz_db_in_dot=False")
     source_subfolder = "source_folder"
     build_folder = "build_folder"
 
