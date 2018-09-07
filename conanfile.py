@@ -58,6 +58,5 @@ class DateConan(ConanFile):
             self.cpp_info.libs.append("pthread")
         use_system_tz_db = 0 if self.options.use_system_tz_db else 1
         defines = ["USE_AUTOLOAD={}".format(use_system_tz_db),
-                   "HAS_REMOTE_API={}".format(use_system_tz_db),
-                   "USE_OS_TZDB={}".format(1 if self.options.use_system_tz_db and self.settings.os != "Windows" else 0)]
+                   "HAS_REMOTE_API={}".format(use_system_tz_db)]
         self.cpp_info.defines.extend(defines)
