@@ -24,13 +24,13 @@ class TestPackageConan(ConanFile):
             if not os.path.exists(os.path.join(zoneinfo_dir, "UTC")):
                 sudo = "sudo " if self.is_sudo_enabled() else ""
                 if not os.path.exists(zoneinfo_dir):
-                    self.run("{} mkdir {}".format(sudo, zoneinfo_dir))
+                    self.run("{} mkdir -p {}".format(sudo, zoneinfo_dir))
                 self.run("{} cp UTC {}".format(sudo, os.path.join(zoneinfo_dir, "UTC")))
         elif tools.os_info.is_macos:
             zoneinfo_dir = os.path.join(os.sep, "etc", "zoneinfo")
             if not os.path.exists(os.path.join(zoneinfo_dir, "UTC")):
                 if not os.path.exists(zoneinfo_dir):
-                    self.run("mkdir {}".format(zoneinfo_dir))
+                    self.run("mkdir -p {}".format(zoneinfo_dir))
                 self.run("cp UTC {}".format(os.path.join(zoneinfo_dir, "UTC")))
 
     def build(self):
