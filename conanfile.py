@@ -26,6 +26,11 @@ class DateConan(ConanFile):
         if self.settings.os == "Windows":
             self.options.remove("fPIC")
 
+    def configure(self):
+        # FIXME: It's not working on Windows
+        if self.settings.os == "Windows":
+            raise Exception("Date is not working on Windows yet.")
+
     def requirements(self):
         if not self.options.use_system_tz_db:
             self.requires("libcurl/7.56.1@bincrafters/stable")
