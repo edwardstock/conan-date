@@ -38,6 +38,21 @@ class TestPackageConan(ConanFile):
                     self.run("cp UTC {}".format(os.path.join(zoneinfo_dir, "UTC")))
                 except:
                     pass
+        elif tools.os_info.is_windows:
+            import winreg
+            sub_key = r'SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders'
+            downloads_guid = '{374DE290-123F-4565-9164-39C4925E467B}'
+            with winreg.OpenKey(winreg.HKEY_CURRENT_USER, sub_key) as key:
+                zoneinfo_dir = winreg.QueryValueEx(key, downloads_guid)[0]
+
+            with tools.chdir(zoneinfo_dir):
+                if os.path.isfile("tzdata2018g.tar.gz"):
+                    os.unlink("tzdata2018g.tar.gz")
+                if not os.path.exists(os.path.join("tzdata", "version")):
+                    tools.get("https://data.iana.org/time-zones/releases/tzdata2018g.tar.gz", destination="tzdata")
+                if not os.path.exists(os.path.join("tzdata", "windowsZones.xml")):
+                    tools.download("http://unicode.org/repos/cldr/trunk/common/supplemental/windowsZones.xml",
+                                   os.path.join("tzdata", "windowsZones.xml"))
 
     def build(self):
         cmake = CMake(self)
