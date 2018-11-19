@@ -51,6 +51,9 @@ class DateConan(ConanFile):
         # https://github.com/HowardHinnant/date/pull/373, also https://github.com/HowardHinnant/date/pull/376
         tools.patch(base_path=self._source_subfolder, patch_file="0001-Improved-C-17-support.patch")
 
+        tools.replace_in_file(os.path.join(self._source_subfolder, 'CMakeLists.txt'),
+                              '${CURL_LIBRARIES}', '${CONAN_LIBS}')
+
     def _configure_cmake(self):
         cmake = CMake(self)
         cmake.definitions["ENABLE_DATE_TESTING"] = False
