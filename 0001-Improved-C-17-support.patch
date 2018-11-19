@@ -1,0 +1,53 @@
+From 5bc0c4342c15833f0d6deff93117e56e5782818a Mon Sep 17 00:00:00 2001
+From: Nico Caprioli <nico.caprioli@gmail.com>
+Date: Mon, 19 Nov 2018 15:03:11 +0700
+Subject: [PATCH] Improved C++17 support
+
+Some C++ compiler (such as clang 5.0) have std::void_t and std::string_view in std::experimental namespace.
+This workaround checks if the compiler has the experimental namespace and includes the correct files (remapping them to std namespace)
+---
+ include/date/date.h | 21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
+
+diff --git a/include/date/date.h b/include/date/date.h
+index cb115a9..60900d4 100644
+--- a/include/date/date.h
++++ b/include/date/date.h
+@@ -62,7 +62,16 @@
+ #include <stdexcept>
+ #include <string>
+ #if HAS_STRING_VIEW
+-# include <string_view>
++#  if defined(__has_include)
++#    if __has_include(<string_view>)
++#      include <string_view>
++#    elif __has_include(<experimental/string_view>)
++#      include <experimental/string_view>
++       namespace std {
++           using string_view = experimental::string_view;
++       }
++#    endif
++#  endif
+ #endif
+ #include <utility>
+ #include <type_traits>
+@@ -126,7 +135,15 @@ namespace date
+ 
+ #ifndef HAS_VOID_T
+ #  if __cplusplus >= 201703
+-#    define HAS_VOID_T 1
++#    if defined(__has_include)
++#      define HAS_VOID_T 1
++#      if __has_include(<experimental/type_traits>)
++#        include <experimental/type_traits>
++         namespace std {
++             typedef experimental::void_t void_t;
++         }
++#    endif
++#  endif
+ #  else
+ #    define HAS_VOID_T 0
+ #  endif
+-- 
+2.7.4.windows.1
+

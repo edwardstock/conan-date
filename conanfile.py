@@ -16,7 +16,7 @@ class DateConan(ConanFile):
     author = "Bincrafters <bincrafters@gmail.com>"
     license = "MIT"
     exports = ["LICENSE.md"]
-    exports_sources = ["CMakeLists.txt"]
+    exports_sources = ["CMakeLists.txt", "0001-Improved-C-17-support.patch"]
     generators = "cmake"
     settings = "os", "arch", "compiler", "build_type"
     options = {"shared": [True, False], "fPIC": [True, False], "use_system_tz_db": [True, False],
@@ -47,6 +47,9 @@ class DateConan(ConanFile):
                   sha256="98907d243397483bd7ad889bf6c66746db0d7d2a39cc9aacc041834c40b65b98")
         extracted_dir = self.name + "-" + self.version
         os.rename(extracted_dir, self._source_subfolder)
+
+        # https://github.com/HowardHinnant/date/pull/373, also https://github.com/HowardHinnant/date/pull/376
+        tools.patch(base_path=self._source_subfolder, patch_file="0001-Improved-C-17-support.patch")
 
     def _configure_cmake(self):
         cmake = CMake(self)
