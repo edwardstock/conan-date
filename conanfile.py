@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from conans import ConanFile, CMake, tools
+from conans.model.version import Version
+from conans.errors import ConanInvalidConfiguration
 import os
 
 
@@ -28,6 +30,13 @@ class DateConan(ConanFile):
             self.options.remove("fPIC")
             self.options.remove("use_system_tz_db")
             self.options.remove("use_tz_db_in_dot")
+
+    def configure(self):
+        compiler_version = Version(self.settings.compiler.version.value)
+        if self.settings.compiler == "Visual Studio" and compiler_version < "14":
+            raise ConanInvalidConfiguration("date requires Visual Studio 2015 and higher")
+        if self.settings.compiler == "apple-clang" and compiler_version < "8.0":
+            raise ConanInvalidConfiguration("date requires Apple Clang 8 and higher")
 
     def requirements(self):
         if self.settings.os == "Windows" or not self.options.use_system_tz_db:
