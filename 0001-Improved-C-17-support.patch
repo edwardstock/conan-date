@@ -31,23 +31,6 @@ index cb115a9..60900d4 100644
  #endif
  #include <utility>
  #include <type_traits>
-@@ -126,7 +135,15 @@ namespace date
- 
- #ifndef HAS_VOID_T
- #  if __cplusplus >= 201703
--#    define HAS_VOID_T 1
-+#    if defined(__has_include)
-+#      define HAS_VOID_T 1
-+#      if __has_include(<experimental/type_traits>)
-+#        include <experimental/type_traits>
-+         namespace std {
-+             typedef experimental::void_t void_t;
-+         }
-+#    endif
-+#  endif
- #  else
- #    define HAS_VOID_T 0
- #  endif
 -- 
 2.7.4.windows.1
 
