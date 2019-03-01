@@ -57,6 +57,7 @@ class DateConan(ConanFile):
     def _configure_cmake(self):
         cmake = CMake(self)
         cmake.definitions["ENABLE_DATE_TESTING"] = False
+        cmake.definitions["DISABLE_STRING_VIEW"] = True
         if self.settings.os == "Windows":
             cmake.definitions["USE_TZ_DB_IN_DOT"] = False
             cmake.definitions["USE_SYSTEM_TZ_DB"] = False
