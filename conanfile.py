@@ -9,8 +9,8 @@ import os
 
 class DateConan(ConanFile):
     name = "date"
-    version = "2.4.1"
-    description = "A date and time library based on the C++11/14/17 <chrono> header"
+    version = "master"
+    description = "A date and time library based on the C++11/14/17 <chrono> header (latest master revision)"
     url = "https://github.com/bincrafters/conan-date"
     homepage = "https://github.com/HowardHinnant/date"
     author = "Bincrafters <bincrafters@gmail.com>"
@@ -43,16 +43,13 @@ class DateConan(ConanFile):
             self.requires("libcurl/7.56.1@bincrafters/stable")
 
     def source(self):
-        tools.get("{0}/archive/v{1}.tar.gz".format(self.homepage, self.version),
-                  sha256="98907d243397483bd7ad889bf6c66746db0d7d2a39cc9aacc041834c40b65b98")
+        tools.get(
+            "{0}/archive/master.tar.gz".format(self.homepage),
+            sha256="c953bc2b34af07f5a3cac57f39150cfcc2b67b3683e9a4d90176f97200910861"
+        )
         extracted_dir = self.name + "-" + self.version
         os.rename(extracted_dir, self._source_subfolder)
-
-        # https://github.com/HowardHinnant/date/pull/373, also https://github.com/HowardHinnant/date/pull/376
-        tools.patch(base_path=self._source_subfolder, patch_file="0001-Improved-C-17-support.patch")
-
-        tools.replace_in_file(os.path.join(self._source_subfolder, 'CMakeLists.txt'),
-                              '${CURL_LIBRARIES}', '${CONAN_LIBS}')
+        tools.replace_in_file(os.path.join(self._source_subfolder, 'CMakeLists.txt'), '${CURL_LIBRARIES}', '${CONAN_LIBS}')
 
     def _configure_cmake(self):
         cmake = CMake(self)
