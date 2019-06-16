@@ -55,8 +55,8 @@ class DateConan(ConanFile):
 
     def source(self):
         tools.get(
-            "{0}/archive/master.tar.gz".format(self.homepage),
-            sha256="c953bc2b34af07f5a3cac57f39150cfcc2b67b3683e9a4d90176f97200910861"
+            "https://github.com/edwardstock/date/archive/master.tar.gz",
+            sha256="2ed72fd8d3df1339ecd6d37e42367c221f9f79214ee9e123fd3d10f27b27b2f1"
         )
         extracted_dir = self.name + "-" + self.version
         os.rename(extracted_dir, self._source_subfolder)
